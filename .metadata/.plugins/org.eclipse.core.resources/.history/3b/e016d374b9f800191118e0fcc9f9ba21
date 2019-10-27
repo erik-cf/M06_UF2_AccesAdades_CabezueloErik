@@ -1,0 +1,12 @@
+package forHonor;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+
+public interface ConnectInterface {
+
+	String connection = "jdbc:sqlite:forHonor.db";
+	
+	public Connection connect() throws SQLException;
+
+}

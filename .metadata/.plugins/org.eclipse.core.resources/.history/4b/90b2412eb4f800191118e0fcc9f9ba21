@@ -1,0 +1,52 @@
+package forHonor;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+public class Main {
+
+	ArrayList<Faccion> facciones;
+	ArrayList<Personaje> personajes;
+	
+	public static void menu() {
+		System.out.println("Que quieres hacer?");
+		System.out.println("1 - Agregar nueva faccion");
+		System.out.println("2 - Agregar nuevo personaje");
+		System.out.println("3 - Muestra personajes de la faccion Caballeros");
+		System.out.println("4 - Muestra el samurai con mas ataque");
+	}
+	
+	public static void main(String[] args) {
+		DBMetodes dbM = new DBMetodes();
+		try {
+			if(!dbM.tableExists()) {
+				dbM.inicialitza();
+				dbM.creaPrimeresFaccions();
+				dbM.creaPrimersPersonatges();
+			}
+			dbM.retornaObjectes();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		
+		
+	}
+
+	public ArrayList<Faccion> getFacciones() {
+		return facciones;
+	}
+
+	public void setFacciones(ArrayList<Faccion> facciones) {
+		this.facciones = facciones;
+	}
+
+	public ArrayList<Personaje> getPersonajes() {
+		return personajes;
+	}
+
+	public void setPersonajes(ArrayList<Personaje> personajes) {
+		this.personajes = personajes;
+	}
+	
+}

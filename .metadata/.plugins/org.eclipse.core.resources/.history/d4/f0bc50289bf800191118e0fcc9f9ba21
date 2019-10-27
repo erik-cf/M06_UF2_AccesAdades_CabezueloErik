@@ -1,0 +1,20 @@
+package forHonor;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+public class DBMetodes implements ConnectInterface {
+
+	public Connection connect() throws SQLException {
+		Connection conn = DriverManager.getConnection(connection);
+		return conn;
+	}
+
+	@Override
+	public void inicialitza() {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

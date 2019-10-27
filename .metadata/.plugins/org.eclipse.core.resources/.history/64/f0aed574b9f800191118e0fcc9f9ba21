@@ -1,0 +1,49 @@
+package forHonor;
+
+public class Faccion {
+	
+	private int id;
+	private String nombre;
+	private String lore;
+	
+	public Faccion() {
+		
+	}
+
+	public Faccion(int id, String nombre, String lore) {
+		super();
+		this.id = id;
+		this.nombre = nombre;
+		this.lore = lore;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public String getLore() {
+		return lore;
+	}
+
+	public void setLore(String lore) {
+		this.lore = lore;
+	}
+
+	public String toString() {
+		return "Faccion con id " + id + " y nombre " + nombre + ".\n Lore: " + lore;
+	}
+	
+	
+}

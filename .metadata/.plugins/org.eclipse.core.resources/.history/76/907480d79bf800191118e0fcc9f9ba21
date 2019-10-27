@@ -1,0 +1,25 @@
+package forHonor;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class DBMetodes implements ConnectInterface {
+
+	public Connection connect() throws SQLException {
+		Connection conn = DriverManager.getConnection(connection);
+		return conn;
+	}
+
+	public void inicialitza() throws SQLException {
+		String creaTaula = "CREATE TABLE IF NOT EXISTS faccion ("
+				+ "faccion_id INTEGER PRIMARY KEY,"
+				+ "nombre_faccion VARCHAR(15),"
+				+ "lore VARCHAR(200)"
+				+ ")";
+		Statement stmnt = connect().createStatement();
+		stmnt.execute(creaTaula);
+	}
+
+}

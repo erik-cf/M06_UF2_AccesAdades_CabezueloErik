@@ -1,0 +1,192 @@
+package forHonor;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
+public class Main {
+
+	ArrayList<Faccion> facciones;
+	ArrayList<Personaje> personajes;
+	static DBMetodes dbM;
+	Scanner sc = new Scanner(System.in);
+
+	public void menu() {
+		System.out.println("Que quieres hacer?");
+		System.out.println("1 - Agregar nueva faccion");
+		System.out.println("2 - Agregar nuevo personaje");
+		System.out.println("3 - Muestra personajes de la faccion Caballeros");
+		System.out.println("4 - Muestra el samurai con mas ataque");
+		System.out.println("5 - Salir");
+	}
+
+	public boolean acciones() throws SQLException {
+		int opcio = 0;
+		System.out.println("Introduce la opcion:");
+		try {
+			opcio = sc.nextInt();
+			sc.nextLine();
+		} catch (InputMismatchException e) {
+			System.out.println("Tiene que ser un numero!");
+			sc.nextLine();
+			return false;
+		}
+		switch (opcio) {
+		default:
+			System.out.println("Tiene que ser un numero entre el 1 y el 5");
+			break;
+		case 1:
+			insertaFaccion();
+			break;
+		case 2:
+			insertaPersonaje();
+			break;
+		case 3:
+			dbM.muestraCaballeros();
+			break;
+		case 4:
+			dbM.muestraSamuraiMasAtaque();
+			break;
+		case 5:
+			System.out.println("Cerrando aplicacion...");
+			sc.close();
+			return true;
+		}
+		return false;
+	}
+
+	public void insertaFaccion() throws SQLException {
+		int id = 0;
+		String nombre, lore;
+		boolean ok = false;
+		while (!ok) {
+			System.out.println("Introduce el id de la faccion:");
+			id = compruebaNumerico();
+			if (existeIDFaccion(id))
+				System.out.println("Este id de faccion ya existe!");
+			else
+				ok = true;
+		}
+		System.out.println("Introduce el nombre de la faccion:");
+		nombre = sc.nextLine();
+
+		System.out.println("Introduce el lore de la faccion: ");
+		lore = sc.nextLine();
+
+		Faccion f = new Faccion(id, nombre, lore);
+		facciones.add(f);
+		dbM.insertaNuevaFaccion(f);
+
+	}
+
+	public void insertaPersonaje() throws SQLException {
+		int id = 0, ataque = 0, defensa = 0, faccion_id = 0;
+		String nombre;
+		boolean ok = false;
+		while (!ok) {
+			System.out.println("Introduce el id del personaje:");
+			id = compruebaNumerico();
+			if (existeIDPersonaje(id)) {
+				System.out.println("Este id de personaje ya existe!");
+			} else {
+				ok = true;
+			}
+		}
+		ok = false;
+
+		System.out.println("Introduce el nombre del personaje: ");
+		nombre = sc.nextLine();
+
+		System.out.println("Introduce el ataque del personaje: ");
+		ataque = compruebaNumerico();
+
+		System.out.println("Introduce la defensa del personaje: ");
+		defensa = compruebaNumerico();
+
+		while (!ok) {
+			System.out.println("Introduce el id de la faccion: ");
+			faccion_id = compruebaNumerico();
+			if (!existeIDFaccion(faccion_id)) {
+				System.out.println("Esa faccion no existe!");
+			} else {
+				ok = true;
+			}
+		}
+
+		Personaje p = new Personaje(id, nombre, ataque, defensa, faccion_id);
+		personajes.add(p);
+		dbM.insertaNuevoPersonaje(p);
+	}
+
+	public boolean existeIDFaccion(int id) {
+		for (Faccion f : facciones) {
+			if (f.getId() == id) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean existeIDPersonaje(int id) {
+		for (Personaje p : personajes) {
+			if (p.getId() == id) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public int compruebaNumerico() {
+		int num;
+		while (true) {
+			try {
+				num = sc.nextInt();
+				sc.nextLine();
+				return num;
+			} catch (InputMismatchException e) {
+				System.out.println("Tiene que ser un valor numerico!");
+				sc.nextLine();
+			}
+		}
+	}
+
+	public static void main(String[] args) {
+		Main m = null;
+		dbM = new DBMetodes();
+		try {
+			if (!dbM.tableExists()) {
+				dbM.inicialitza();
+			}
+			m = dbM.retornaObjectes();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		try {
+			do {
+				m.menu();
+			} while (!m.acciones());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public ArrayList<Faccion> getFacciones() {
+		return facciones;
+	}
+
+	public void setFacciones(ArrayList<Faccion> facciones) {
+		this.facciones = facciones;
+	}
+
+	public ArrayList<Personaje> getPersonajes() {
+		return personajes;
+	}
+
+	public void setPersonajes(ArrayList<Personaje> personajes) {
+		this.personajes = personajes;
+	}
+
+}

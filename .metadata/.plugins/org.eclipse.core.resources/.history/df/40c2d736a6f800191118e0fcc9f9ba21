@@ -1,0 +1,80 @@
+package forHonor;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class DBMetodes implements ConnectInterface {
+
+	public Connection connect() throws SQLException {
+		Connection conn = DriverManager.getConnection(connection);
+		return conn;
+	}
+
+	public void inicialitza() throws SQLException {
+		String creaTaulaFaccion = "CREATE TABLE IF NOT EXISTS faccion (" + "faccion_id INTEGER PRIMARY KEY,"
+				+ "nombre_faccion VARCHAR(15)," + "lore VARCHAR(200)" + ");";
+		Statement stmnt = connect().createStatement();
+		stmnt.execute(creaTaulaFaccion);
+
+		String creaTaulaPersonaje = "CREATE TABLE IF NOT EXISTS personaje (" + "personaje_id INTEGER PRIMARY KEY,"
+				+ "nombre_personaje VARCHAR(15)," + "ataque INTEGER," + "defensa INTEGER," + "faccion_id INTEGER,"
+				+ "FOREIGN KEY (faccion_id) REFERENCES faccion(faccion_id)" + ");";
+		stmnt.execute(creaTaulaPersonaje);
+
+		creaPrimersPersonatges();
+	}
+
+	public void creaPrimeresFaccions() throws SQLException {
+		String lore, insertaDadesFaccions;
+		Statement stmnt = connect().createStatement();
+		lore = "Los caballeros de Ashfeld son paradigmas del poder. La Legión de Hierro los envió para llevar la paz a esas tierras. Desde entonces disfrutan de la libertad y han hecho de Ashfeld su hogar.";
+		insertaDadesFaccions = "INSERT INTO faccion VALUES(1, 'Caballeros', '" + lore + "');";
+		stmnt.execute(insertaDadesFaccions);
+
+		lore = "Los vikingos desaparecieron hace siglos, tras escapar de sus derruidas tierras natales en busca de costas desconocidas. Los caballeros conquistaron a aquellos que se quedaron atrás y los incorporaron a su cultura.";
+		insertaDadesFaccions = "INSERT INTO faccion VALUES(2, 'Vikingos', '" + lore + "');";
+		stmnt.execute(insertaDadesFaccions);
+
+		lore = "La historia no ha sido amable con los samuráis. Originarios de una tierra muy lejana, allende los mares, cuentan la historia de un emperador y una patria que desaparecieron entre el mar y el fuego.";
+		insertaDadesFaccions = "INSERT INTO faccion VALUES(3, 'Samuráis', '" + lore + "');";
+		stmnt.execute(insertaDadesFaccions);
+
+		lore = "Los Wu Lin son una facción de guerreros del interior de las murallas de la antigua China. Ahora, cuatro guerreros Wu Lin viajan al oeste en busca de venganza por las guerras, las traiciones y las tragedias personales. Combaten para reclamar su sitio en la próxima dinastía.";
+		insertaDadesFaccions = "INSERT INTO faccion VALUES(4, 'Wu Lin', '" + lore + "');";
+		stmnt.execute(insertaDadesFaccions);
+	}
+
+	public void creaPrimersPersonatges() throws SQLException {
+		Statement stmnt = connect().createStatement();
+		String insertaDadesPersonatge;
+		insertaDadesPersonatge = "INSERT INTO personaje VALUES (1, 'Aramusha', 35, 20, 3);"; 
+		stmnt.execute(insertaDadesPersonatge);
+		
+		insertaDadesPersonatge = "INSERT INTO personaje VALUES (2, 'Orochi', 80, 45, 3);"; 
+		stmnt.execute(insertaDadesPersonatge);
+		
+		insertaDadesPersonatge = "INSERT INTO personaje VALUES (3, 'Berserker', 30, 30, 2);"; 
+		stmnt.execute(insertaDadesPersonatge);
+		
+		insertaDadesPersonatge = "INSERT INTO personaje VALUES (4, 'The Raider', 100, 95, 2);"; 
+		stmnt.execute(insertaDadesPersonatge);
+		
+		insertaDadesPersonatge = "INSERT INTO personaje VALUES (5, 'The Warden', 90, 120, 1);"; 
+		stmnt.execute(insertaDadesPersonatge);
+		
+		insertaDadesPersonatge = "INSERT INTO personaje VALUES (6, 'Ademar', 70, 80, 1);"; 
+		stmnt.execute(insertaDadesPersonatge);
+		
+		insertaDadesPersonatge = "INSERT INTO personaje VALUES (7, 'Julius', 80, 105, 1);"; 
+		stmnt.execute(insertaDadesPersonatge);
+		
+		insertaDadesPersonatge = "INSERT INTO personaje VALUES (8, 'Shidou', 50, 40, 4);"; 
+		stmnt.execute(insertaDadesPersonatge);
+		
+		insertaDadesPersonatge = "INSERT INTO personaje VALUES (9, 'Wei Chang', 70, 55, 4);"; 
+		stmnt.execute(insertaDadesPersonatge);
+	}
+
+}

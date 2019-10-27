@@ -1,0 +1,9 @@
+package forHonor;
+
+public interface ConnectInterface {
+
+	String connection = "jdbc:sqlite:forHonor.db";
+	
+	public java.sql.Connection
+	
+}
